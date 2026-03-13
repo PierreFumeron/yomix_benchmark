@@ -6,10 +6,6 @@ import os
 import argparse
 from pathlib import Path
 
-"""
-Creates a publication-quality grouped barplot with sample/feature counts on the x-axis,
-reading data from a specified path.
-"""
 
 dataset_info = {
     'citeseq': {'samples': 8617, 'features': 2000},
@@ -24,7 +20,7 @@ mapping_names = {
     'pbmc': "PBMC",
     'sarc_ba': "DNA Methylation",
     'proteomics_nonan': "Proteomics",
-    'recount_log_normalized_hvg': 'recount'
+    'recount_log_normalized_hvg': 'TCGA + GTEX'
 }
 
 method_names = {
@@ -45,9 +41,8 @@ result_dir = "result" # Update this path as needed
 
 if not os.path.isdir(result_dir):
     print(f"Error: The specified directory does not exist: {result_dir}")
-    # return
-# CONDITION TO REMOVE LAWLOR ///////////////////////////
-file_names = [fn for fn in os.listdir(result_dir) if fn.endswith("_runtime.csv") and "lawlor" not in fn.lower()]
+    
+file_names = [fn for fn in os.listdir(result_dir) if fn.endswith("_runtime.csv") ]
 if not file_names:
     print(f"No '_runtime.csv' files found in '{result_dir}'.")
     # return
@@ -81,7 +76,7 @@ for dataset in datasets:
 sns.set_theme(style="whitegrid", context="paper", font_scale=1.7)
 plt.figure(figsize=(14, 8)) 
 
-# --- CHANGE: REORDER THE LIST TO PLACE 'tcga' AT THE END ---
+# REORDER THE LIST 
 dataset_order = ['sarc_ba', 'recount_log_normalized_hvg', 'citeseq', 'pbmc',  'proteomics_nonan']
 
 ax = sns.barplot(

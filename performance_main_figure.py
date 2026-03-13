@@ -76,6 +76,7 @@ else:
 
     # --- Save the Plot ---
     plt.tight_layout()
-    # plt.show()
+
     plt.savefig("plots/model_all_datasets.svg", dpi=1200)
+    plt.show()
     # print("Plot saved as 'average_comparison_all_datasets.svg'")

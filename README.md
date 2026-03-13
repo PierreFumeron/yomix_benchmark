@@ -7,21 +7,27 @@ In a python virtual environment, do:
 
 where your file is an anndata object (h5ad format) with 'labels' in obs field
 
-The results will be stored in the 'result' folder as csv files : one for the perfomances of the classifiers on the signatures from the different methods, the other with the time it took to compute those methods (with the suffix _runtime)
+The results will be stored in the 'result' folder as csv files : one for the perfomances of the classifiers on the signatures from the different methods, one for the time it took to compute those methods (with the suffix _runtime), one for the features semected by the different methods for the different task (with suffix _top_features).
 
 Now you can run the scripts to plot the figures by passing the file recently produced as argument
-To get the heatmap:
 
-	python3 heatmap.py [filepath]
 
-To get the performances comparison across labels:
+To get the main figure of the SVM performances comparison across labels:
 
-	python3 figures_std [filepath]
+	python3 performance_main_figure.py 
 
-To get run time comparison:
+To get runtime comparison:
 
-	python3 time_result.py [filepath]
+	python3 runtime_figure_main.py
 	
+For the supplementary figures comparing KNN, SVM and RF:
+
+python3 classifier_comparison.py
+
+For the volcano plots:
+
+python3 volcano_plots.py
+
 
 ## List of contributors
 
