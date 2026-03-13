@@ -14,19 +14,6 @@ import cosg
 from tqdm import tqdm
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
-# Configurations  ("T_LUAD", "T_LUSC"),
-# ("T_STAD", "T_PAAD"),
-# ("T_GBM", "T_LGG"),
-# ("T_LIHC", "T_CHOL"),
-# ("T_KIRP", "T_KIRC"),
-# ("T_UCEC", "T_UCS"),
-# ("T_CESC", "T_ESCA"),
-# ("T_THYM", "T_HNSC"),
-
-benchmark_problems = [
-    ("CD8 T", "B"),  # ("T_BRCA", "T_BLCA")
-    # ("T_SKCM", "T_UVM"),
-]
 
 
 def main(
@@ -42,16 +29,11 @@ def main(
     (yomix, cosg, scanpy_wilcoxon, scanpy_t-test)
     and evaluates their performance using a classifier
     (default: SVM) across various gene signature sizes.
-    It supports both "one-vs-rest" and "pairwise" comparison modes.
     Parameters
     ----------
     xd : AnnData
         Annotated data matrix (e.g., from Scanpy) containing gene
         expression data and cell metadata.
-    marker_method : str
-        Marker selection method to use ("scanpy" or "cosg").
-    comparison_mode : str
-        Mode of comparison, either "one-vs-rest" or "pairwise".
     output_filename : str
         Name of the output CSV file (without extension) to save
         benchmarking results.
@@ -63,6 +45,7 @@ def main(
     -------
     ranked_genes : dict
         Dictionary containing ranked gene lists for each method and comparison."""
+    
     xd.obs["id"] = [i for i in range(xd.obs.shape[0])]
     all_methods = ["yomix", "cosg", "wilcoxon", "t-test"]
     runtime = {}
@@ -166,7 +149,7 @@ def main(
                         "svm": SVC(
                             kernel="linear", class_weight="balanced", random_state=run
                         ),
-                        "knn":KNeighborsClassifier(random_state=run),
+                        "knn":KNeighborsClassifier(),
                         "rf": RandomForestClassifier(random_state=run)
                     }
                     for clf_name in classifiers:
@@ -185,7 +168,11 @@ def main(
                                 "model": clf_name,
                             }
                         )
+
     runtime_df = pd.DataFrame(runtime)
+    # ensure result directory exists
+    result_dir = Path("result")
+    result_dir.mkdir(parents=True, exist_ok=True)
     runtime_df.to_csv(f"result/{output_filename}_runtime.csv")
     res_df = pd.DataFrame(results)
     res_df.to_csv(f"result/{output_filename}.csv")
