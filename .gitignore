@@ -1,0 +1,11 @@
+data/
+.vscode
+__pycache__
+*.R*
+*.h5ad
+*.err
+*.out
+*.pickle
+*.ipynb
+result/*.csv
+cellmarkers_pbmc
